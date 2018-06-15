@@ -1,122 +1,105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="css/style.css" />
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <title>WC3 BUILD ORDER</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <script>
-      function dragResize(edge){
-        overwolf.windows.getCurrentWindow(function(result){
-          if (result.status=="success"){
-            overwolf.windows.dragResize(result.window.id, edge);
-          }
-        });
-      };
+<head>
+  <link rel="stylesheet" href="css/style.css" />
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <title>WC3 BUILD ORDER</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-      function dragMove(){
-        overwolf.windows.getCurrentWindow(function(result){
-          if (result.status=="success" && result.window.state !== "Maximized"){
-            overwolf.windows.dragMove(result.window.id);
-          }
-        });
-      };
+  <script>
+    function dragResize(edge) {
+      overwolf.windows.getCurrentWindow(function(result) {
+        if (result.status == "success") {
+          overwolf.windows.dragResize(result.window.id, edge);
+        }
+      });
+    };
 
-      function closeWindow(){
-        overwolf.windows.getCurrentWindow(function(result){
-          if (result.status=="success"){
-            overwolf.windows.close(result.window.id);
-          }
-        });
-      };
+    function dragMove() {
+      overwolf.windows.getCurrentWindow(function(result) {
+        if (result.status == "success" && result.window.state !== "Maximized") {
+          overwolf.windows.dragMove(result.window.id);
+        }
+      });
+    };
 
-      function minimize(){
-        overwolf.windows.getCurrentWindow(function(result){
-          if (result.status=="success"){
-            overwolf.windows.minimize(result.window.id);
-          }
-        });
-      };
+    function closeWindow() {
+      overwolf.windows.getCurrentWindow(function(result) {
+        if (result.status == "success") {
+          overwolf.windows.close(result.window.id);
+        }
+      });
+    };
 
-      function toggleMaximize(){
-        let element = document.querySelector('.maximize-restore-selector'),
-            root = document.documentElement;
+    function minimize() {
+      overwolf.windows.getCurrentWindow(function(result) {
+        if (result.status == "success") {
+          overwolf.windows.minimize(result.window.id);
+        }
+      });
+    };
 
-        overwolf.windows.getCurrentWindow(function(result){
-          if (result.status !== "success") {
-            return;
-          }
+    function toggleMaximize() {
+      let element = document.querySelector('.maximize-restore-selector'),
+        root = document.documentElement;
 
-          if (element.checked) {
-            overwolf.windows.restore(result.window.id);
-            root.classList.remove('maximized');
-          } else {
-            overwolf.windows.maximize(result.window.id);
-            root.classList.add('maximized');
-          }
-        });
-      };
+      overwolf.windows.getCurrentWindow(function(result) {
+        if (result.status !== "success") {
+          return;
+        }
 
-      function showSupport() {
-        window.location.href = "overwolf://settings/support";
-      };
+        if (element.checked) {
+          overwolf.windows.restore(result.window.id);
+          root.classList.remove('maximized');
+        } else {
+          overwolf.windows.maximize(result.window.id);
+          root.classList.add('maximized');
+        }
+      });
+    };
 
-      function openSubWindow(){
-        alert("the subwindow will only be visible inside a game");
-        overwolf.windows.obtainDeclaredWindow("SubWindow", function(result){
-          if (result.status == "success"){
-            overwolf.windows.restore(result.window.id, function(result){
-                console.log(result);
-            });
-          }
-        });
-      };
+    function showSupport() {
+      window.location.href = "overwolf://settings/support";
+    };
 
-      function takeScreenshot(){
-        overwolf.media.takeScreenshot(function(result){
-          if (result.status == "success"){
-            var img = document.getElementById("screenshot");
-            img.src = result.url;
-            img.onload = function() {
-              overwolf.media.shareImage(img, "Screen Shot");
-            };
-          }
-        });
-      }
+    function openSubWindow() {
+      overwolf.windows.obtainDeclaredWindow("SubWindow", function(result) {
+        if (result.status == "success") {
+          overwolf.windows.restore(result.window.id, function(result) {
+            console.log(result);
+          });
+        }
+      });
+    };
+  </script>
+</head>
 
-      function runTeamSpeak(){
-        overwolf.extensions.launch("lmkhofgknaclgcdplfkgcahdkdmomimaoklioonf");
-      };
-    </script>
-  </head>
+<body>
+  <div class="content" onmousedown="dragMove();">
 
-  <body>
-    <div class="content" onmousedown="dragMove();">
+    <header>
 
-      <header>
-
-
-        <div class="window-controls-group">
-          <button class="window-control" onclick="showSupport()">
+      <div class="window-controls-group">
+        <button class="window-control" onclick="showSupport()">
             <svg class="svg-icon-fill">
               <use xlink:href="assets/svg/sprite.svg#window-control_support" />
             </svg>
-          </button>
+        </button>
 
-          <button class="window-control">
+        <button class="window-control">
             <svg class="svg-icon-fill">
               <use xlink:href="assets/svg/sprite.svg#window-control_settings" />
             </svg>
-          </button>
+        </button>
 
-          <button class="window-control" onclick="minimize()">
+        <button class="window-control" onclick="minimize()">
             <svg class="svg-icon-fill">
               <use xlink:href="assets/svg/sprite.svg#window-control_minimize" />
             </svg>
-          </button>
+        </button>
 
-          <button class="window-control" onclick="toggleMaximize()">
+        <button class="window-control" onclick="toggleMaximize()">
             <input type="checkbox" class="maximize-restore-selector toggle-icons" checked />
             <svg class="svg-icon-fill svg-icon-restore">
               <use xlink:href="assets/svg/sprite.svg#window-control_restore" />
@@ -126,35 +109,55 @@
             </svg>
           </button>
 
-          <button class="window-control window-control-close" onclick="closeWindow();">
+        <button class="window-control window-control-close" onclick="closeWindow();">
             <svg class="svg-icon-fill">
               <use xlink:href="assets/svg/sprite.svg#window-control_close" />
             </svg>
           </button>
-        </div>
-      </header>
+      </div>
+    </header>
 
-      <main>
-        <h1>Warcraft 3 Build Order</h1>
+    <main>
+      <h1>Warcraft 3 Build Order</h1>
 
-        <div class="btn-group">
-          <button class="btn" id="close" onclick="closeWindow();">Close</button>
-          <button class="btn" id="open-subwindow" onclick="openSubWindow();">Open Sub-Window</button>
-        </div>
+      <div class="btn-group">
+        <button class="btn" id="close" onclick="closeWindow();">Close</button>
+        <button class="btn" id="open-subwindow" onclick="openSubWindow();">Open Sub-Window</button>
+      </div>
 
+      <div>
+        <table>
+          <tr>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            <td>0:00</td>
+            <td>Build that other thing</td>
+          </td>
+          <tr>
+            <td>0:03</td>
+            <td>Build that other thing</td>
+          </tr>
+          <tr>
+            <td>0:08</td>
+            <td>And that one other thing</td>
+          </tr>
+        </table>
+      </div>
 
-        <img id="screenshot" width="300px"></img>
-      </main>
-    </div>
+    </main>
+  </div>
 
-    <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
-    <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
-    <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
-    <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
+  <div class="resize horizontal top" onmousedown="dragResize('Top');"></div>
+  <div class="resize vertical left" onmousedown="dragResize('Left');"></div>
+  <div class="resize vertical right" onmousedown="dragResize('Right');"></div>
+  <div class="resize horizontal bottom" onmousedown="dragResize('Bottom');"></div>
 
-    <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
-    <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
-    <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
-    <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
-  </body>
+  <div class="resize corner top-left" onmousedown="dragResize('TopLeft');"></div>
+  <div class="resize corner top-right" onmousedown="dragResize('TopRight');"></div>
+  <div class="resize corner bottom-left" onmousedown="dragResize('BottomLeft');"></div>
+  <div class="resize corner bottom-right" onmousedown="dragResize('BottomRight');"></div>
+</body>
+
 </html>
